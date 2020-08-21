@@ -1,0 +1,13 @@
+create view my_view as select enrolled.snum ,class.name, faculty.fname from enrolled ,class,faculty where enrolled.cname=class.name and class.fid=faculty.fid;
+create view finally_view as  select count(snum) count_snum, fname from my_view group by fname;
+delimiter $$
+create function count_stud(fname varchar(20))
+returns integer DETERMINISTIC
+begin 
+declare scount integer;
+select count_snum into scount from finally_view where finally_view.fname=fname ;
+return scount;
+end;
+$$
+delimiter ; 
+select count_stud( "Linda Davis");
