@@ -1,0 +1,58 @@
+1.create view n as select s.sname,age from faculty f,class c,student s,enrolled e where c.fid=f.fid and f.fname='Linda Davis' and c.name=e.cname and e.snum=s.snum
+    ->union
+    -> select s.sname,age from student s where s.major='Finance';
+    ->select * from n where age=(select max(age) from n);
+
+2.select distinct(c.name) from class c where c.room="20 AVW"
+    -> union
+    -> select e.cname from enrolled e group by e.cname having count(e.snum)>4;
+
+3.SELECT f.fname,f.fid FROM faculty f
+	     	WHERE f.fid in ( SELECT fid FROM class
+			GROUP BY fid HAVING COUNT(*)=(SELECT COUNT(DISTINCT room) FROM class) );
+
+4.create view n1 as select fname,count(name) as c from class natural join faculty group by fid;
+	select * from n1 where c=(select max(c) from n1);
+5.select fname from faculty where fname not in (select fname from class natural join faculty);
+
+6.select s.age,s.level from student s group by s.age,s.level having s.level in (select s1.level from student s1
+    where s1.age=s.age group by s1.level,s1.age having count(*)>=all(select count(*) from student s2 where s1.age=s2.age group by s2.level,s2.age));
+
+7.select count(distinct name),room from class group by room;
+
+8. create view n8 as select e.cname from enrolled e group by e.cname having count(*)>=1;
+	select c.name from class c,n8 where c.room='R128' and c.name =n8.cname;
+
+9.select e.cname,c.meets_at from enrolled e,class c where e.cname=c.name group by e.cname having count(*)>=1;
+
+10. select distinct s.sname from student s,enrolled e,class c where s.level='JR' and e.snum=s.snum and c.name=e.cname and c.room='R128';
+
+11. select sname from student where age>18 and level='SR' and major not like "%Engineering";
+
+12.select distinct s.sname from student s where s.snum not in(select e.snum from enrolled e);
+
+13.select distinct s.sname from student s,enrolled e,class c,faculty f where s.snum=e.snum and e.cname=c.name and f.fname in (select distinct f.fname from faculty f where 6>(select count(e.snum) from class c,enrolled e where c.name=e.cname and c.fid=f.fid));
+
+14.select fname,fid,count(*) as c from class natural join faculty group by fname
+     union 
+     select fname,fid,0 from faculty where fname not in (select fname from class natural join faculty group by fname);
+
+15.select distinct c.name,c.room,count(e.snum) from class c left outer join enrolled e on c.name=e.cname group by c.name;
+
+16.alter table student add check(age>=17);
+     insert into student value(123456,"Arjita Jaiswal","Computer","JR",19);
+
+17.
+	1.select distinct * from faculty natural join class  where room="R128" and fname in (select fname from faculty natural join class where deptid=20);
+	2.create view q17 as (select distinct * from faculty natural join class where  room="R128" and deptid=20);
+	    select * from q17;
+
+18.select supervisor from EmpSup where person="Ravi";
+
+19.select supervisor from EmpSup where person=(select supervisor from EmpSup where person="Ravi");
+
+20.create view p1 as (select supervisor from EmpSup where person="Ravi");
+	create view p2 as (select supervisor from EmpSup where person=(select supervisor from p1));
+	create view p3 as (select supervisor from EmpSup where person=(select supervisor from p2));
+	select * from p1,p2,p3;
+
