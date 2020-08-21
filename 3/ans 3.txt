@@ -1,0 +1,30 @@
+1.select level , avg(age) as avg_age  from student group by level;
+
+2. select level , avg(age) as avg_age from student where level != 'JR' group by level;
+
+3. select distinct fname,count(*) from class,faculty where faculty.fid=class.fid group by fname;
+
+4. select sname,count(*) from student,enrolled where student.snum=enrolled.snum and enrolled.cname="Database Systems" and sname not in (select sname from student,enrolled where student.snum=enrolled.snum and enrolled.cname="Operating System Design");
+
+5. select cname, avg(age) as avg_age from student, enrolled where enrolled.snum=student.snum group by cname having count(cname)>2;
+
+6. select f.fid from faculty f,class e where f.fid=e.fid group by f.fid having count(f.fid)>1;
+
+7.select s.snum from student s,enrolled e where s.snum=e.snum group by s.snum having count(s.snum)>1;
+
+8.select * from student order by age asc;
+
+
+9. select sname,snum from student where major like '%Engineering%';
+
+10.select major,count(*) from student where major like '%Engineering%' group by major;
+
+11. select distinct f.fid,f.fname from faculty f,class c where f.fid=c.fid and (c.name="Data Structures" or c.name="Operating System Design");
+
+12. select distinct f.fid,f.fname from faculty f,class c where f.fid=c.fid and f.dept_id=20;
+
+13.select distinct s.snum,s.sname from student s,enrolled e where s.sname not in(select s.sname from student s,enrolled e where s.snum=e.snum);
+14.select sname,age from student where sname like "% H%" and sname like '___%';
+15.select level , min(age) from student where age>17 group by level having count(snum)>1;
+
+	
