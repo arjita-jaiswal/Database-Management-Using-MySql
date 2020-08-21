@@ -1,0 +1,12 @@
+1.select sname,age from student;
+2.select snum,sname,major,level,age from where age>18;
+3.select snum from enrolled where cname='Database Systems';
+4.select sname from student s,enrolled e where s.snum=e.snum and e.cname='Database Systems';
+5.select fname from faculty where deptid=20;
+6.select * from class where room='R128';
+7.select f.fid,fname,deptid from faculty f,class c where f.fid=c.fid and c.room='R128';
+8.select fname from faculty f,class c where f.fid=c.fid and c.name='Data Structures';
+9.select sname from student s,enrolled e,class c,faculty f where f.fid=c.fid and f.fname='Ivana Teach' and e.cname=c.name and e.snum=s.snum;
+10.select sname from student s,enrolled e,class c,faculty f where f.fid=c.fid and f.fname='Ivana Teach' and e.cname=c.name and e.snum=s.snum and s.level='JR';
+11.select e.cname from enrolled e,student s where e.snum=s.snum and s.sname='Joseph Thompson';
+12.select distinct sname from student s,enrolled e where e.snum=s.snum;
