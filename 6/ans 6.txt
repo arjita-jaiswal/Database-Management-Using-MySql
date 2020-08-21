@@ -1,0 +1,49 @@
+1.alter table class add(credits int(10)default 0);
+alter table student add(total_credits int(10)default 0);
+alter table enrolled add(grade varchar(20));
+update class set credits=3 where name='Data Structures';
+update class set credits=4 where name='Database Systems';  
+update class set credits=5 where name='Operating System Design';
+update class set credits=4 where name='Archaeology of the Incas';
+update class set credits=2 where name='Aviation Accident Investigation';
+'
+'
+'
+'
+'
+delimiter $$
+create trigger t1 
+after update on enrolled 
+for each row begin 
+if new.grade<>"F"&&new.grade is not null and (old.grade="F" or old.grade is null)  then 
+	update student set total_credits=total_credits+(select credits from class where class.name=new.cname) where student.snum=new.snum; 
+elseif new.grade="F" or new.grade is null then 
+	update student set total_credits=0 where student.snum=new.snum; 
+end if;
+end;
+$$
+
+
+2>delimiter $$
+mysql> create trigger t2
+    after update on student
+    for each row
+    if new.total_credits<=10 then
+    delete from ready_students where
+    ready_students.snum=new.snum;
+    else
+    insert into ready_students values(new.snum);
+    end if;
+    end;
+    $$
+
+3->delimiter $$
+create trigger three6
+before insert on works
+for each row
+begin
+if ((select sum(works.pct_time) from works group by works.eid having works.eid=new.eid)+new.pct_time)>100 then
+SIGNAL SQLSTATE '02000' SET MESSAGE_TEXT = 'Warning: perecentage > 100!';
+END IF;
+end;
+$$

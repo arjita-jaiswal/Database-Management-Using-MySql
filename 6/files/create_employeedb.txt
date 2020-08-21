@@ -1,0 +1,22 @@
+create table emp(
+eid numeric(9,0) primary key,
+ename varchar(30),
+	age numeric(3,0),
+salary numeric(10,2)
+);
+
+create table dept(
+did numeric(2,0) primary key,dname varchar(20),
+budget numeric(10,2),
+	managerid numeric(9,0),
+foreign key(managerid) references emp(eid)
+);
+
+create table works(
+eid numeric(9,0),
+did numeric(2,0),
+pct_time numeric(3,0),
+primary key(eid,did),
+  foreign key(eid) references emp(eid),
+foreign key(did) references dept(did)
+);
